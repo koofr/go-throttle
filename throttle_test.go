@@ -10,7 +10,7 @@ import (
 
 func Test_NoPings(t *testing.T) {
 	var wg sync.WaitGroup
-	throttle := throttle.NewThrottle(time.Millisecond, false)
+	throttle := throttle.NewThrottle(10*time.Millisecond, false)
 
 	count := 0
 
@@ -22,7 +22,7 @@ func Test_NoPings(t *testing.T) {
 		}
 	}()
 
-	time.Sleep(10 * time.Millisecond)
+	time.Sleep(100 * time.Millisecond)
 	throttle.Stop()
 
 	wg.Wait()
@@ -35,7 +35,7 @@ func Test_NoPings(t *testing.T) {
 func Test_MultiPingInOnePeriod(t *testing.T) {
 	var wg sync.WaitGroup
 
-	throttle := throttle.NewThrottle(time.Millisecond, false)
+	throttle := throttle.NewThrottle(10*time.Millisecond, false)
 	count := 0
 
 	wg.Add(1)
@@ -50,7 +50,7 @@ func Test_MultiPingInOnePeriod(t *testing.T) {
 		throttle.Trigger()
 	}
 
-	time.Sleep(5 * time.Millisecond)
+	time.Sleep(50 * time.Millisecond)
 
 	throttle.Stop()
 
@@ -64,7 +64,7 @@ func Test_MultiPingInOnePeriod(t *testing.T) {
 func Test_MultiPingInMultiplePeriod(t *testing.T) {
 	var wg sync.WaitGroup
 
-	throttle := throttle.NewThrottle(time.Millisecond, false)
+	throttle := throttle.NewThrottle(10*time.Millisecond, false)
 	count := 0
 
 	wg.Add(1)
@@ -76,11 +76,11 @@ func Test_MultiPingInMultiplePeriod(t *testing.T) {
 	}()
 
 	for i := 0; i < 5; i++ {
-		time.Sleep(time.Millisecond / 4)
+		time.Sleep(10 * time.Millisecond / 4)
 		throttle.Trigger()
 	}
 
-	time.Sleep(5 * time.Millisecond)
+	time.Sleep(50 * time.Millisecond)
 
 	throttle.Stop()
 
@@ -94,7 +94,7 @@ func Test_MultiPingInMultiplePeriod(t *testing.T) {
 func Test_TrailingMultiPingInOnePeriod(t *testing.T) {
 	var wg sync.WaitGroup
 
-	throttle := throttle.NewThrottle(time.Millisecond, true)
+	throttle := throttle.NewThrottle(10*time.Millisecond, true)
 	count := 0
 
 	cond := sync.NewCond(&sync.Mutex{})
@@ -118,7 +118,7 @@ func Test_TrailingMultiPingInOnePeriod(t *testing.T) {
 	throttle.Trigger()
 	throttle.Trigger()
 
-	time.Sleep(5 * time.Millisecond)
+	time.Sleep(50 * time.Millisecond)
 
 	throttle.Stop()
 
@@ -132,7 +132,7 @@ func Test_TrailingMultiPingInOnePeriod(t *testing.T) {
 func Test_ThrottleFunc(t *testing.T) {
 	count := 0
 
-	throttle := throttle.ThrottleFunc(time.Millisecond, false, func() {
+	throttle := throttle.ThrottleFunc(10*time.Millisecond, false, func() {
 		count += 1
 	})
 
@@ -140,7 +140,7 @@ func Test_ThrottleFunc(t *testing.T) {
 		throttle.Trigger()
 	}
 
-	time.Sleep(5 * time.Millisecond)
+	time.Sleep(50 * time.Millisecond)
 
 	throttle.Stop()
 
