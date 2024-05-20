@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/boz/go-throttle"
+	"github.com/koofr/go-throttle"
 )
 
 func Test_NoPings(t *testing.T) {

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/boz/go-throttle"
+	"github.com/koofr/go-throttle"
 )
 
 const (
